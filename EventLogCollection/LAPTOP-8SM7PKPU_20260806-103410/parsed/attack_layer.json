@@ -1,0 +1,37 @@
+{
+  "name": "LAPTOP-8SM7PKPU_20260806-103410 - detection coverage",
+  "versions": {
+    "attack": "14",
+    "navigator": "4.9.0",
+    "layer": "4.5"
+  },
+  "domain": "enterprise-attack",
+  "description": "Techniques evidenced by alerts raised during this collection. Score is the number of alerts, not a confidence measure.",
+  "techniques": [
+    {
+      "techniqueID": "T1543.003",
+      "score": 3,
+      "color": "",
+      "comment": "Rules: persist_service_installed",
+      "enabled": true
+    }
+  ],
+  "gradient": {
+    "colors": [
+      "#EDF0F3",
+      "#C2571A",
+      "#9E2A2B"
+    ],
+    "minValue": 0,
+    "maxValue": 3
+  },
+  "legendItems": [
+    {
+      "label": "Alert raised for this technique",
+      "color": "#C2571A"
+    }
+  ],
+  "showTacticRowBackground": true,
+  "tacticRowBackground": "#16202B",
+  "sorting": 3
+}

@@ -1,0 +1,166 @@
+# Persistence (TA0003) and Privilege Escalation (TA0004)
+---
+id: persist_run_key_modified
+title: Autorun registry key modified
+description: >
+  A Run or RunOnce key was written. These keys execute their contents at user
+  logon and remain the most common persistence mechanism on Windows precisely
+  because they require no elevation when written under HKCU.
+severity: medium
+author: Yaswanth
+techniques: [T1547.001]
+tags: [persistence]
+references:
+  - https://attack.mitre.org/techniques/T1547/001/
+false_positives:
+  - Software installers legitimately register autorun entries
+  - Windows Update and OEM utilities
+detection:
+  selection:
+    category: registry_event
+    registry_key|contains:
+      - \CurrentVersion\Run
+      - \CurrentVersion\RunOnce
+      - \CurrentVersion\Explorer\Shell Folders
+      - \Winlogon\Shell
+      - \Winlogon\Userinit
+  condition: selection
+
+---
+id: persist_run_key_from_temp
+title: Autorun key pointing at a temporary directory
+description: >
+  A Run key whose value references AppData, Temp or ProgramData. Legitimate
+  software installs to Program Files and registers from there; persistence
+  pointing into a user-writable scratch directory is a much stronger signal
+  than autorun modification alone, hence the higher severity.
+severity: high
+author: Yaswanth
+techniques: [T1547.001, T1036]
+tags: [persistence, defense_evasion]
+false_positives:
+  - Portable applications and per-user installers such as some browsers
+detection:
+  selection:
+    category: registry_event
+    registry_key|contains: [\CurrentVersion\Run]
+  location:
+    registry_value|contains:
+      - \AppData\
+      - \Temp\
+      - \ProgramData\
+      - \Users\Public\
+  condition: selection and location
+
+---
+id: persist_service_from_user_path
+title: Service installed from a user-writable location
+description: >
+  A new service was registered with an image path in a temporary or user
+  directory. Services run with SYSTEM privileges by default, making this both
+  a persistence and a privilege escalation primitive - it is the mechanism
+  behind PsExec-style lateral movement.
+severity: critical
+author: Yaswanth
+techniques: [T1543.003, T1569.002]
+tags: [persistence, privilege_escalation, lateral_movement]
+false_positives:
+  - Some legitimate software stages services from ProgramData
+detection:
+  selection:
+    category: service_install
+  suspicious_path:
+    service_path|contains:
+      - \AppData\
+      - \Temp\
+      - \Users\Public\
+      - \Downloads\
+      - \ProgramData\
+  condition: selection and suspicious_path
+
+---
+id: persist_service_installed
+title: New service installed
+description: >
+  Any service creation (EventID 7045). Kept at low severity as a hunting
+  signal rather than an alert - service installation is common during
+  legitimate software deployment, but the events are valuable context when
+  triaging a confirmed incident.
+severity: low
+author: Yaswanth
+techniques: [T1543.003]
+tags: [persistence, hunting]
+false_positives:
+  - Routine software installation and Windows servicing
+detection:
+  selection:
+    category: service_install
+  condition: selection
+
+---
+id: persist_scheduled_task_created
+title: Scheduled task created
+description: >
+  A scheduled task was registered. Tasks survive reboots and can be configured
+  to run as SYSTEM, making them a durable persistence mechanism. Task creation
+  by an interactive user account is more notable than creation by an installer.
+severity: medium
+author: Yaswanth
+techniques: [T1053.005]
+tags: [persistence, privilege_escalation]
+false_positives:
+  - Software installers and Windows built-in maintenance tasks
+detection:
+  selection:
+    category: scheduled_task
+  filter_ms:
+    task_name|contains:
+      - \Microsoft\Windows\
+  condition: selection and not filter_ms
+
+---
+id: privesc_new_local_account
+title: Local user account created
+description: >
+  A new user account was created (EventID 4720). On a workstation this is
+  infrequent and is a common attacker action after gaining administrative
+  access, providing a persistent credential that survives password resets on
+  the compromised account.
+severity: high
+author: Yaswanth
+techniques: [T1136.001]
+tags: [persistence, account_manipulation]
+false_positives:
+  - IT provisioning of a new user or service account
+detection:
+  selection:
+    category: account_management
+    event_id: 4720
+  condition: selection
+
+---
+id: privesc_admin_group_addition
+title: Account added to a privileged group
+description: >
+  A member was added to Administrators, Domain Admins or another privileged
+  group. This is the standard privilege consolidation step following initial
+  compromise and warrants investigation whenever it is not tied to a change
+  ticket.
+severity: critical
+author: Yaswanth
+techniques: [T1098, T1078.003]
+tags: [persistence, privilege_escalation]
+false_positives:
+  - Legitimate administrative delegation
+detection:
+  selection:
+    category: group_management
+  privileged:
+    group_name|contains:
+      - Administrators
+      - Domain Admins
+      - Enterprise Admins
+      - Schema Admins
+      - Backup Operators
+      - Remote Desktop Users
+  condition: selection and privileged

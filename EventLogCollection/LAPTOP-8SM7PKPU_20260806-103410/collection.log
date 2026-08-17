@@ -1,0 +1,45 @@
+﻿[2026-08-06 10:34:10] [INFO] Collection root : C:\Users\yaswa\Desktop\Dissertation\Project Artifact\Automation_Script\EventLogCollection\LAPTOP-8SM7PKPU_20260806-103410
+[2026-08-06 10:34:10] [INFO] Window          : 2026-08-05 10:34:10 -> 2026-08-06 10:34:10 (local)
+[2026-08-06 10:34:10] [INFO] Channels        : 10 requested
+[2026-08-06 10:34:10] [INFO] Format          : All
+[2026-08-06 10:34:10] [WARN] Not running elevated - Security channel and EVTX export will likely fail.
+[2026-08-06 10:34:10] [INFO] --- Security
+[2026-08-06 10:34:10] [WARN] Channel not present on this host - skipping.
+[2026-08-06 10:34:10] [INFO] --- System
+[2026-08-06 10:34:10] [OK] EVTX  -> System.evtx
+[2026-08-06 10:34:10] [OK] JSONL -> System.jsonl  (57 events)
+[2026-08-06 10:34:10] [OK] CSV   -> System.csv
+[2026-08-06 10:34:10] [INFO] --- Application
+[2026-08-06 10:34:10] [OK] EVTX  -> Application.evtx
+[2026-08-06 10:34:11] [OK] JSONL -> Application.jsonl  (51 events)
+[2026-08-06 10:34:11] [OK] CSV   -> Application.csv
+[2026-08-06 10:34:11] [INFO] --- Microsoft-Windows-Sysmon/Operational
+[2026-08-06 10:34:11] [WARN] Channel not present on this host - skipping.
+[2026-08-06 10:34:11] [INFO] --- Microsoft-Windows-PowerShell/Operational
+[2026-08-06 10:34:11] [OK] EVTX  -> Microsoft-Windows-PowerShell-Operational.evtx
+[2026-08-06 10:34:11] [OK] JSONL -> Microsoft-Windows-PowerShell-Operational.jsonl  (2 events)
+[2026-08-06 10:34:11] [OK] CSV   -> Microsoft-Windows-PowerShell-Operational.csv
+[2026-08-06 10:34:11] [INFO] --- Windows PowerShell
+[2026-08-06 10:34:11] [OK] EVTX  -> Windows-PowerShell.evtx
+[2026-08-06 10:34:11] [INFO] No events in the requested window.
+[2026-08-06 10:34:11] [INFO] --- Microsoft-Windows-TaskScheduler/Operational
+[2026-08-06 10:34:11] [WARN] Channel exists but is disabled.
+[2026-08-06 10:34:11] [OK] EVTX  -> Microsoft-Windows-TaskScheduler-Operational.evtx
+[2026-08-06 10:34:11] [INFO] No events in the requested window.
+[2026-08-06 10:34:11] [INFO] --- Microsoft-Windows-WinRM/Operational
+[2026-08-06 10:34:11] [OK] EVTX  -> Microsoft-Windows-WinRM-Operational.evtx
+[2026-08-06 10:34:11] [INFO] No events in the requested window.
+[2026-08-06 10:34:11] [INFO] --- Microsoft-Windows-Windows Defender/Operational
+[2026-08-06 10:34:11] [OK] EVTX  -> Microsoft-Windows-Windows-Defender-Operational.evtx
+[2026-08-06 10:34:11] [OK] JSONL -> Microsoft-Windows-Windows-Defender-Operational.jsonl  (22 events)
+[2026-08-06 10:34:11] [OK] CSV   -> Microsoft-Windows-Windows-Defender-Operational.csv
+[2026-08-06 10:34:11] [INFO] --- Microsoft-Windows-TerminalServices-LocalSessionManager/Operational
+[2026-08-06 10:34:11] [OK] EVTX  -> Microsoft-Windows-TerminalServices-LocalSessionManager-Operational.evtx
+[2026-08-06 10:34:11] [OK] JSONL -> Microsoft-Windows-TerminalServices-LocalSessionManager-Operational.jsonl  (1 events)
+[2026-08-06 10:34:11] [OK] CSV   -> Microsoft-Windows-TerminalServices-LocalSessionManager-Operational.csv
+[2026-08-06 10:34:11] [INFO] Hashing output files (SHA-256)...
+[2026-08-06 10:34:11] [INFO] ======================================================
+[2026-08-06 10:34:11] [INFO] Channels collected : 8 / 10
+[2026-08-06 10:34:11] [INFO] Total events       : 133
+[2026-08-06 10:34:11] [INFO] Manifest           : C:\Users\yaswa\Desktop\Dissertation\Project Artifact\Automation_Script\EventLogCollection\LAPTOP-8SM7PKPU_20260806-103410\manifest.json
+[2026-08-06 10:34:11] [OK] ======================================================

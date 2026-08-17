@@ -1,0 +1,193 @@
+# Execution - MITRE ATT&CK TA0002
+# Each rule declares its own technique IDs. Attribution happens here rather
+# than at parse time because a technique claim needs logic, not just an event ID.
+---
+id: exec_powershell_encoded
+title: Encoded PowerShell command line
+description: >
+  PowerShell invoked with -EncodedCommand (or an abbreviation of it). Base64
+  encoding of the payload is a routine way to defeat command-line inspection
+  and is heavily used by frameworks such as Empire, Cobalt Strike and
+  Metasploit. PowerShell accepts any unambiguous prefix of a parameter name,
+  so -e, -en, -enc and -encodedcommand are all equivalent and all must be
+  covered.
+severity: high
+author: Yaswanth
+techniques: [T1059.001, T1027]
+tags: [execution, defense_evasion, powershell]
+references:
+  - https://attack.mitre.org/techniques/T1059/001/
+false_positives:
+  - Some management agents and installers legitimately use encoded commands
+  - Microsoft Intune and SCCM script delivery
+detection:
+  selection_proc:
+    process_name|endswith: [powershell.exe, pwsh.exe]
+  selection_flag:
+    process_command_line|re:
+      # -e / -en / -enc / -encodedcommand followed by base64. The 12-char floor
+      # is deliberate: 'whoami' encodes to roughly 16 characters in UTF-16LE,
+      # so a higher threshold silently misses short commands.
+      - '\s-[eE]{1}[ncodema]*\s+[A-Za-z0-9+/=]{12,}'
+  condition: selection_proc and selection_flag
+
+---
+id: exec_powershell_download_cradle
+title: PowerShell download cradle
+description: >
+  PowerShell command line containing a remote-download pattern combined with
+  in-memory execution. This is the classic stage-one cradle: retrieve a script
+  over HTTP and execute it without ever writing to disk, defeating file-based
+  detection.
+severity: high
+author: Yaswanth
+techniques: [T1059.001, T1105]
+tags: [execution, command_and_control]
+false_positives:
+  - Developer and administrator scripts that fetch modules from internal repos
+  - Chocolatey and similar package manager bootstrap commands
+detection:
+  selection_download:
+    process_command_line|contains:
+      - DownloadString
+      - DownloadFile
+      - DownloadData
+      - Invoke-WebRequest
+      - Invoke-RestMethod
+      - Net.WebClient
+      - Start-BitsTransfer
+  selection_exec:
+    process_command_line|contains:
+      - IEX
+      - Invoke-Expression
+      - iex(
+      - '| iex'
+  condition: selection_download and selection_exec
+
+---
+id: exec_script_block_suspicious
+title: Suspicious PowerShell script block content
+description: >
+  Script block logging (EventID 4104) captures the deobfuscated body of
+  executed PowerShell, including code that never touched disk. This rule looks
+  for offensive tooling markers in that decoded content, which is why it can
+  catch payloads that the command-line rules miss entirely.
+severity: high
+author: Yaswanth
+techniques: [T1059.001, T1027]
+tags: [execution, defense_evasion]
+references:
+  - https://attack.mitre.org/techniques/T1059/001/
+false_positives:
+  - Security research and red team tooling run deliberately in the lab
+  - Defensive scripts that reference these API names in comments
+detection:
+  selection:
+    category: script_execution
+  keywords:
+    script_block_text|contains:
+      - FromBase64String
+      - Invoke-Mimikatz
+      - Invoke-Expression
+      - IEX
+      - DownloadString
+      - DownloadFile
+      - Net.WebClient
+      - AmsiScanBuffer
+      - VirtualAlloc
+      - CreateRemoteThread
+      - ReflectivePEInjection
+      - System.Reflection.Assembly
+      - '-nop -w hidden'
+  condition: selection and keywords
+
+---
+id: exec_office_spawns_shell
+title: Office application spawned a command interpreter
+description: >
+  A Microsoft Office process created a shell or scripting host. Office
+  applications have no legitimate reason to spawn cmd.exe or powershell.exe
+  during normal document viewing, so this parent-child pairing is a strong
+  indicator of macro-based initial access.
+severity: critical
+author: Yaswanth
+techniques: [T1566.001, T1059.005, T1204.002]
+tags: [initial_access, execution]
+false_positives:
+  - Legitimate business macros, particularly in finance environments
+detection:
+  selection:
+    parent_process_name|endswith:
+      - winword.exe
+      - excel.exe
+      - powerpnt.exe
+      - outlook.exe
+      - msaccess.exe
+    process_name|endswith:
+      - cmd.exe
+      - powershell.exe
+      - pwsh.exe
+      - wscript.exe
+      - cscript.exe
+      - mshta.exe
+      - rundll32.exe
+  condition: selection
+
+---
+id: exec_lolbin_network_activity
+title: Living-off-the-land binary made a network connection
+description: >
+  A signed Microsoft binary with dual-use capability initiated an outbound
+  connection. certutil, bitsadmin and mshta are all legitimate system tools,
+  which is precisely why they are used to stage payloads - the binary is
+  trusted and often allowlisted.
+severity: high
+author: Yaswanth
+techniques: [T1105, T1218]
+tags: [command_and_control, defense_evasion, lolbin]
+references:
+  - https://lolbas-project.github.io/
+false_positives:
+  - certutil is genuinely used for certificate revocation checks
+  - bitsadmin used by legitimate software updaters
+detection:
+  selection:
+    category: network_connection
+    process_name|endswith:
+      - certutil.exe
+      - bitsadmin.exe
+      - mshta.exe
+      - regsvr32.exe
+      - rundll32.exe
+      - msiexec.exe
+      - curl.exe
+  filter_local:
+    dst_ip|startswith: ['10.', '192.168.', '127.']
+  condition: selection and not filter_local
+
+---
+id: exec_suspicious_parent_child
+title: Unusual process ancestry for a command interpreter
+description: >
+  A command interpreter whose parent is a service host, web server or database
+  process. Web shells and exploited services characteristically produce this
+  ancestry, because the compromised service itself becomes the parent of the
+  attacker's shell.
+severity: high
+author: Yaswanth
+techniques: [T1059, T1505.003]
+tags: [execution, persistence]
+false_positives:
+  - Application deployment scripts invoked by service accounts
+  - Monitoring agents that shell out to collect metrics
+detection:
+  selection:
+    parent_process_name|endswith:
+      - w3wp.exe
+      - httpd.exe
+      - nginx.exe
+      - tomcat.exe
+      - sqlservr.exe
+      - services.exe
+    process_name|endswith: [cmd.exe, powershell.exe, pwsh.exe, bash.exe]
+  condition: selection

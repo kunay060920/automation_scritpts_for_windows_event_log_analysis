@@ -1,0 +1,22 @@
+{
+  "detected_at_utc": "2026-08-06T09:52:13Z",
+  "events_database": "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\parsed\\events.sqlite",
+  "events_evaluated": 133,
+  "rules_folder": "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\rules",
+  "engine_version": "1.0.0",
+  "rules_loaded": 22,
+  "rules_evaluated": 22,
+  "rules_failed": 0,
+  "rules_fired": 1,
+  "alerts_total": 3,
+  "alerts_by_severity": {
+    "low": 3
+  },
+  "alerts_by_rule": {
+    "persist_service_installed": 3
+  },
+  "alerts_by_technique": {
+    "T1543.003": 3
+  },
+  "rule_errors": []
+}

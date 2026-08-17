@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LAPTOP-8SM7PKPU_20260802-123055 - Event Log Analysis Report</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --ink:#16202B; --paper:#FBFBF9; --muted:#5F6B78; --rule:#D8DEE4;
+  --steel:#4A6480; --panel:#F3F5F7;
+  --mono:"Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;
+  --sans:"Segoe UI",-apple-system,Roboto,Helvetica,Arial,sans-serif;
+}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.sheet{max-width:1080px;margin:0 auto;padding:44px 40px 88px}
+a{color:var(--steel)}
+
+/* Masthead */
+.masthead{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:0}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--muted)}
+h1{font-size:29px;line-height:1.15;margin:.32em 0 .1em;font-weight:600;
+  letter-spacing:-.015em}
+.subject{font-family:var(--mono);font-size:13px;color:var(--steel)}
+
+/* Evidence seal - the signature element */
+.seal{display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--rule);
+  border-left:5px solid var(--steel);background:#fff;margin:24px 0 34px}
+.seal.failed{border-left-color:var(--sev-critical,#9E2A2B)}
+.seal-stamp{padding:16px 22px;border-right:1px solid var(--rule);
+  display:flex;flex-direction:column;justify-content:center;min-width:168px}
+.stamp-mark{font-family:var(--mono);font-size:13px;font-weight:700;
+  letter-spacing:.12em;border:2px solid currentColor;padding:5px 10px;
+  display:inline-block;transform:rotate(-2.5deg);text-align:center}
+.stamp-ok{color:#2F6B4F}
+.stamp-bad{color:#9E2A2B}
+.seal-body{padding:14px 22px;flex:1;min-width:260px}
+.seal-body dl{display:grid;grid-template-columns:auto 1fr;gap:2px 18px;margin:0;
+  font-family:var(--mono);font-size:12px}
+.seal-body dt{color:var(--muted)}
+.seal-body dd{margin:0;word-break:break-all}
+
+/* Sections */
+section{margin:40px 0 0}
+h2{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);font-weight:600;
+  border-bottom:1px solid var(--rule);padding-bottom:7px;margin:0 0 18px}
+h2 .idx{color:var(--steel);margin-right:10px}
+h3{font-size:16px;margin:26px 0 10px;font-weight:600}
+
+/* Metrics */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));
+  gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.metric{background:#fff;padding:14px 16px}
+.metric .n{font-family:var(--mono);font-size:25px;font-weight:600;
+  letter-spacing:-.02em;display:block;line-height:1.1}
+.metric .k{font-size:11px;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.07em}
+
+/* Charts */
+.chart{width:100%;height:auto;margin:6px 0 4px}
+.svg-label{font-family:var(--mono);font-size:11px;fill:var(--muted);
+  letter-spacing:.08em}
+.svg-value{font-family:var(--mono);font-size:12px;fill:var(--ink);font-weight:600}
+.svg-tick{font-family:var(--mono);font-size:9.5px;fill:var(--muted)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+@media(max-width:820px){.two-col{grid-template-columns:1fr}}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0}
+th{text-align:left;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);font-weight:600;
+  border-bottom:1px solid var(--rule);padding:7px 10px 7px 0}
+td{padding:7px 10px 7px 0;border-bottom:1px solid #EDF0F3;vertical-align:top}
+td.mono,.mono{font-family:var(--mono);font-size:12px}
+tbody tr:hover{background:#F7F9FA}
+
+/* Exhibits */
+.exhibit{border:1px solid var(--rule);border-left:4px solid var(--sev);
+  background:#fff;margin:0 0 12px;padding:0}
+.exhibit summary{padding:13px 18px;cursor:pointer;display:flex;gap:14px;
+  align-items:baseline;list-style:none}
+.exhibit summary::-webkit-details-marker{display:none}
+.exhibit summary:hover{background:#F7F9FA}
+.exhibit summary:focus-visible{outline:2px solid var(--steel);outline-offset:-2px}
+.ex-no{font-family:var(--mono);font-size:11px;color:var(--muted);
+  letter-spacing:.06em;flex-shrink:0}
+.ex-title{font-weight:600;flex:1}
+.ex-sev{font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:#fff;background:var(--sev);
+  padding:2px 8px;border-radius:2px;flex-shrink:0}
+.ex-time{font-family:var(--mono);font-size:11.5px;color:var(--muted);flex-shrink:0}
+.ex-body{padding:4px 18px 18px;border-top:1px solid var(--rule);background:#FCFDFD}
+.ex-body p{margin:12px 0 10px;color:#333B45;max-width:70ch}
+.ex-body dl{display:grid;grid-template-columns:auto 1fr;gap:3px 16px;margin:10px 0;
+  font-family:var(--mono);font-size:12px}
+.ex-body dt{color:var(--muted);white-space:nowrap}
+.ex-body dd{margin:0;word-break:break-all}
+.fp{border-left:2px solid var(--rule);padding:2px 0 2px 12px;margin:12px 0 0;
+  font-size:12.5px;color:var(--muted)}
+.fp strong{color:var(--ink);font-weight:600}
+.tech{font-family:var(--mono);font-size:11px;background:var(--panel);
+  padding:1px 6px;border:1px solid var(--rule);margin-right:4px;
+  display:inline-block}
+
+.empty{color:var(--muted);font-style:italic;font-size:13.5px}
+.note{background:var(--panel);border-left:3px solid var(--steel);
+  padding:12px 16px;font-size:13px;color:#333B45;margin:14px 0}
+footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+@media print{
+  body{font-size:11pt}
+  .sheet{max-width:none;padding:0}
+  .exhibit{break-inside:avoid;page-break-inside:avoid}
+  .exhibit[open] .ex-body{display:block}
+  details{open:true}
+  section{break-inside:auto}
+  h2{break-after:avoid}
+  tbody tr:hover{background:none}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head><body>
+<div class="sheet">
+
+<header class="masthead">
+  <div class="kicker">Windows Event Log Analysis &middot; Automated Report</div>
+  <h1>LAPTOP-8SM7PKPU_20260802-123055</h1>
+  <div class="subject">LAPTOP-8SM7PKPU &middot; collection window
+    2026-08-01T11:30:55.330Z to 2026-08-02T11:30:55.330Z</div>
+</header>
+
+<div class="seal ">
+  <div class="seal-stamp"><span class="stamp-mark stamp-ok">SEAL INTACT</span>
+    <div class="mono" style="font-size:10.5px;color:#5F6B78;margin-top:7px">
+      20 files verified</div>
+  </div>
+  <div class="seal-body">
+    <dl><dt>Collection</dt><dd>LAPTOP-8SM7PKPU_20260802-123055</dd><dt>Acquired</dt><dd>2026-08-02T11:31:02Z</dd><dt>Operator</dt><dd>LAPTOP-8SM7PKPU\yaswa</dd><dt>Elevated</dt><dd>False</dd><dt>Evidence path</dt><dd>C:\Users\yaswa\Desktop\Dissertation\Project Artifact\Automation_Script\EventLogCollection\LAPTOP-8SM7PKPU_20260802-123055</dd></dl>
+  </div>
+</div>
+
+<section>
+  <h2><span class="idx">01</span>Summary</h2>
+  <div class="metrics">
+    <div class="metric"><span class="n">465</span>
+      <span class="k">Events</span></div>
+    <div class="metric"><span class="n">28</span>
+      <span class="k">Normalised</span></div>
+    <div class="metric"><span class="n">22</span>
+      <span class="k">Rules run</span></div>
+    <div class="metric"><span class="n">11</span>
+      <span class="k">Alerts</span></div>
+    <div class="metric"><span class="n">0</span>
+      <span class="k">Critical</span></div>
+    <div class="metric"><span class="n">3</span>
+      <span class="k">Techniques</span></div>
+  </div>
+  <p class="note">1 alert(s) at high or critical severity require triage. Exhibits are ordered by severity.</p>
+</section>
+
+<section>
+  <h2><span class="idx">02</span>Alert profile</h2>
+  <div class="two-col">
+    <div><h3>By severity</h3><svg viewBox="0 0 578 72" role="img" aria-label="Alerts by severity" class="chart"><text x="0" y="18" class="svg-label">HIGH</text><rect x="104" y="0" width="420" height="26" fill="#EDF0F3"/><rect x="104" y="0" width="42" height="26" fill="#C2571A"/><text x="156" y="18" class="svg-value">1</text><text x="0" y="54" class="svg-label">LOW</text><rect x="104" y="36" width="420" height="26" fill="#EDF0F3"/><rect x="104" y="36" width="420" height="26" fill="#5A7D8C"/><text x="534" y="54" class="svg-value">10</text></svg></div>
+    <div><h3>Over time</h3><svg viewBox="0 0 760 184" role="img" aria-label="Alert timeline" class="chart"><line x1="0" y1="150" x2="760" y2="150" stroke="#D8DEE4"/><rect x="171.0" y="12.0" width="38.0" height="138.0" fill="#5A7D8C"/><text x="190.0" y="166" class="svg-tick" text-anchor="middle">06:00</text><rect x="551.0" y="136.2" width="38.0" height="13.8" fill="#C2571A"/><text x="570.0" y="166" class="svg-tick" text-anchor="middle">10:00</text><text x="0" y="181" class="svg-tick">2026-08-02 (UTC)</text></svg></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="idx">03</span>ATT&amp;CK techniques evidenced</h2>
+  <table><thead><tr><th>Technique</th><th>Alerts</th><th>Rules</th></tr></thead><tbody><tr><td class='mono'>T1543.003</td><td>10</td><td class='mono'>persist_service_installed</td></tr><tr><td class='mono'>T1059.001</td><td>1</td><td class='mono'>exec_script_block_suspicious</td></tr><tr><td class='mono'>T1027</td><td>1</td><td class='mono'>exec_script_block_suspicious</td></tr></tbody></table>
+  <p class="note">Technique attribution is made by the rule that fired, not by
+  the event identifier alone. A Navigator layer is written alongside this
+  report as <span class="mono">attack_layer.json</span>.</p>
+</section>
+
+<section>
+  <h2><span class="idx">04</span>Exhibits</h2>
+  
+<details class="exhibit" style="--sev:#C2571A">
+  <summary>
+    <span class="ex-no">EX-001</span>
+    <span class="ex-title">Suspicious PowerShell script block content</span>
+    <span class="ex-time">2026-08-02T10:58:02.709Z</span>
+    <span class="ex-sev">high</span>
+  </summary>
+  <div class="ex-body">
+    <p>Script block logging (EventID 4104) captures the deobfuscated body of executed PowerShell, including code that never touched disk. This rule looks for offensive tooling markers in that decoded content, which is why it can catch payloads that the command-line rules miss entirely.</p>
+    <p class="mono">Rule: exec_script_block_suspicious &nbsp; <span class="tech">T1059.001</span><span class="tech">T1027</span></p>
+    <dl><dt>Host</dt><dd>LAPTOP-8SM7PKPU</dd><dt>Channel</dt><dd>Microsoft-Windows-PowerShell/Operational</dd><dt>Event ID</dt><dd>4104</dd><dt>Record</dt><dd>4205</dd><dt>File</dt><dd>C:\Users\yaswa\.vscode\extensions\ms-vscode.powershell-2025.4.0\modules\PSScriptAnalyzer\1.24.0\PSScriptAnalyzer.psm1</dd><dt>Events in window</dt><dd>1</dd></dl>
+    <p class="fp"><strong>Known benign causes:</strong> Security research and red team tooling run deliberately in the lab; Defensive scripts that reference these API names in comments</p>
+    <p class="fp"><strong>Reference:</strong> <a href="https://attack.mitre.org/techniques/T1059/001/" rel="noreferrer">https://attack.mitre.org/techniques/T1059/001/</a></p>
+  </div>
+</details>
+<details class="exhibit" style="--sev:#5A7D8C">
+  <summary>
+    <span class="ex-no">EX-002</span>
+    <span class="ex-title">New service installed</span>
+    <span class="ex-time">2026-08-02T06:08:41.090Z</span>
+    <span class="ex-sev">low</span>
+  </summary>
+  <div class="ex-body">
+    <p>Any service creation (EventID 7045). Kept at low severity as a hunting signal rather than an alert - service installation is common during legitimate software deployment, but the events are valuable context when triaging a confirmed incident.</p>
+    <p class="mono">Rule: persist_service_installed &nbsp; <span class="tech">T1543.003</span></p>
+    <dl><dt>Host</dt><dd>LAPTOP-8SM7PKPU</dd><dt>Channel</dt><dd>System</dd><dt>Event ID</dt><dd>7040</dd><dt>Record</dt><dd>73811</dd><dt>Service</dt><dd>Windows Modules Installer</dd><dt>Events in window</dt><dd>1</dd></dl>
+    <p class="fp"><strong>Known benign causes:</strong> Routine software installation and Windows servicing</p>
+    
+  </div>
+</details>
+<details class="exhibit" style="--sev:#5A7D8C">
+  <summary>
+    <span class="ex-no">EX-003</span>
+    <span class="ex-title">New service installed</span>
+    <span class="ex-time">2026-08-02T06:08:41.122Z</span>
+    <span class="ex-sev">low</span>
+  </summary>
+  <div class="ex-body">
+    <p>Any service creation (EventID 7045). Kept at low severity as a hunting signal rather than an alert - service installation is common during legitimate software deployment, but the events are valuable context when triaging a confirmed incident.</p>
+    <p class="mono">Rule: persist_service_installed &nbsp; <span class="tech">T1543.003</span></p>
+    <dl><dt>Host</dt><dd>LAPTOP-8SM7PKPU</dd><dt>Channel</dt><dd>System</dd><dt>Event ID</dt><dd>7040</dd><dt>Record</dt><dd>73812</dd><dt>Service</dt><dd>Windows Modules Installer</dd><dt>Events in window</dt><dd>1</dd></dl>
+    <p class="fp"><strong>Known benign causes:</strong> Routine software installation and Windows servicing</p>
+    
+  </div>
+</details>
+<details class="exhibit" style="--sev:#5A7D8C">
+  <summary>
+    <span class="ex-no">EX-004</span>
+    <span class="ex-title">New service installed</span>
+    <span class="ex-time">2026-08-02T06:08:43.264Z</span>
+    <span class="ex-sev">low</span>
+  </summary>
+  <div class="ex-body">
+    <p>Any service creation (EventID 7045). Kept at low severity as a hunting signal rather than an alert - service installation is common during legitimate software deployment, but the events are valuable context when triaging a confirmed incident.</p>
+    <p class="mono">Rule: persist_service_installed &nbsp; <span class="tech">T1543.003</span></p>
+    <dl><dt>Host</dt><dd>LAPTOP-8SM7PKPU</dd><dt>Channel</dt><dd>System</dd><dt>Event ID</dt><dd>7040</dd><dt>Record</dt><dd>73813</dd><dt>Service</dt><dd>Windows Modules Installer</dd><dt>Events in window</dt><dd>1</dd></dl>
+    <p class="fp"><strong>Known benign causes:</strong> Routine software installation and Windows servicing</p>
+    
+  </div>
+</details>
+<details class="exhibit" style="--sev:#5A7D8C">
+  <summary>
+    <span class="ex-no">EX-005</span>
+    <span class="ex-title">New service installed</span>
+    <span class="ex-time">2026-08-02T06:08:43.278Z</span>
+    <span class="ex-sev">low</span>
+  </summary>
+  <div class="ex-body">
+    <p>Any service creation (EventID 7045). Kept at low severity as a hunting signal rather than an alert - service installation is common during legitimate software deployment, but the events are valuable context when triaging a confirmed incident.</p>
+    <p class="mono">Rule: persist_service_installed &nbsp; <span class="tech">T1543.003</span></p>
+    <dl><dt>Host</dt><dd>LAPTOP-8SM7PKPU</dd><dt>Channel</dt><dd>System</dd><dt>Event ID</dt><dd>7040</dd><dt>Record</dt><dd>73814</dd><dt>Service</dt><dd>Windows Modules Installer</dd><dt>Events in window</dt><dd>1</dd></dl>
+    <p class="fp"><strong>Known benign causes:</strong> Routine software installation and Windows servicing</p>
+    
+  </div>
+</details>
+<details class="exhibit" style="--sev:#5A7D8C">
+  <summary>
+    <span class="ex-no">EX-006</span>
+    <span class="ex-title">New service installed</span>
+    <span class="ex-time">2026-08-02T06:08:43.433Z</span>
+    <span class="ex-sev">low</span>
+  </summary>
+  <div class="ex-body">
+    <p>Any service creation (EventID 7045). Kept at low severity as a hunting signal rather than an alert - service installation is common during legitimate software deployment, but the events are valuable context when triaging a confirmed incident.</p>
+    <p class="mono">Rule: persist_service_installed &nbsp; <span class="tech">T1543.003</span></p>
+    <dl><dt>Host</dt><dd>LAPTOP-8SM7PKPU</dd><dt>Channel</dt><dd>System</dd><dt>Event ID</dt><dd>7040</dd><dt>Record</dt><dd>73817</dd><dt>Service</dt><dd>Windows Modules Installer</dd><dt>Events in window</dt><dd>1</dd></dl>
+    <p class="fp"><strong>Known benign causes:</strong> Routine software installation and Windows servicing</p>
+    
+  </div>
+</details>
+<details class="exhibit" style="--sev:#5A7D8C">
+  <summary>
+    <span class="ex-no">EX-007</span>
+    <span class="ex-title">New service installed</span>
+    <span class="ex-time">2026-08-02T06:08:48.947Z</span>
+    <span class="ex-sev">low</span>
+  </summary>
+  <div class="ex-body">
+    <p>Any service creation (EventID 7045). Kept at low severity as a hunting signal rather than an alert - service installation is common during legitimate software deployment, but the events are valuable context when triaging a confirmed incident.</p>
+    <p class="mono">Rule: persist_service_installed &nbsp; <span class="tech">T1543.003</span></p>
+    <dl><dt>Host</dt><dd>LAPTOP-8SM7PKPU</dd><dt>Channel</dt><dd>System</dd><dt>Event ID</dt><dd>7040</dd><dt>Record</dt><dd>73818</dd><dt>Service</dt><dd>Windows Modules Installer</dd><dt>Events in window</dt><dd>1</dd></dl>
+    <p class="fp"><strong>Known benign causes:</strong> Routine software installation and Windows servicing</p>
+    
+  </div>
+</details>
+<details class="exhibit" style="--sev:#5A7D8C">
+  <summary>
+    <span class="ex-no">EX-008</span>
+    <span class="ex-title">New service installed</span>
+    <span class="ex-time">2026-08-02T06:08:49.118Z</span>
+    <span class="ex-sev">low</span>
+  </summary>
+  <div class="ex-body">
+    <p>Any service creation (EventID 7045). Kept at low severity as a hunting signal rather than an alert - service installation is common during legitimate software deployment, but the events are valuable context when triaging a confirmed incident.</p>
+    <p class="mono">Rule: persist_service_installed &nbsp; <span class="tech">T1543.003</span></p>
+    <dl><dt>Host</dt><dd>LAPTOP-8SM7PKPU</dd><dt>Channel</dt><dd>System</dd><dt>Event ID</dt><dd>7040</dd><dt>Record</dt><dd>73819</dd><dt>Service</dt><dd>Windows Modules Installer</dd><dt>Events in window</dt><dd>1</dd></dl>
+    <p class="fp"><strong>Known benign causes:</strong> Routine software installation and Windows servicing</p>
+    
+  </div>
+</details>
+<details class="exhibit" style="--sev:#5A7D8C">
+  <summary>
+    <span class="ex-no">EX-009</span>
+    <span class="ex-title">New service installed</span>
+    <span class="ex-time">2026-08-02T06:08:49.135Z</span>
+    <span class="ex-sev">low</span>
+  </summary>
+  <div class="ex-body">
+    <p>Any service creation (EventID 7045). Kept at low severity as a hunting signal rather than an alert - service installation is common during legitimate software deployment, but the events are valuable context when triaging a confirmed incident.</p>
+    <p class="mono">Rule: persist_service_installed &nbsp; <span class="tech">T1543.003</span></p>
+    <dl><dt>Host</dt><dd>LAPTOP-8SM7PKPU</dd><dt>Channel</dt><dd>System</dd><dt>Event ID</dt><dd>7040</dd><dt>Record</dt><dd>73820</dd><dt>Service</dt><dd>Windows Modules Installer</dd><dt>Events in window</dt><dd>1</dd></dl>
+    <p class="fp"><strong>Known benign causes:</strong> Routine software installation and Windows servicing</p>
+    
+  </div>
+</details>
+<details class="exhibit" style="--sev:#5A7D8C">
+  <summary>
+    <span class="ex-no">EX-010</span>
+    <span class="ex-title">New service installed</span>
+    <span class="ex-time">2026-08-02T06:08:57.414Z</span>
+    <span class="ex-sev">low</span>
+  </summary>
+  <div class="ex-body">
+    <p>Any service creation (EventID 7045). Kept at low severity as a hunting signal rather than an alert - service installation is common during legitimate software deployment, but the events are valuable context when triaging a confirmed incident.</p>
+    <p class="mono">Rule: persist_service_installed &nbsp; <span class="tech">T1543.003</span></p>
+    <dl><dt>Host</dt><dd>LAPTOP-8SM7PKPU</dd><dt>Channel</dt><dd>System</dd><dt>Event ID</dt><dd>7040</dd><dt>Record</dt><dd>73821</dd><dt>Service</dt><dd>Windows Modules Installer</dd><dt>Events in window</dt><dd>1</dd></dl>
+    <p class="fp"><strong>Known benign causes:</strong> Routine software installation and Windows servicing</p>
+    
+  </div>
+</details>
+<details class="exhibit" style="--sev:#5A7D8C">
+  <summary>
+    <span class="ex-no">EX-011</span>
+    <span class="ex-title">New service installed</span>
+    <span class="ex-time">2026-08-02T06:08:57.678Z</span>
+    <span class="ex-sev">low</span>
+  </summary>
+  <div class="ex-body">
+    <p>Any service creation (EventID 7045). Kept at low severity as a hunting signal rather than an alert - service installation is common during legitimate software deployment, but the events are valuable context when triaging a confirmed incident.</p>
+    <p class="mono">Rule: persist_service_installed &nbsp; <span class="tech">T1543.003</span></p>
+    <dl><dt>Host</dt><dd>LAPTOP-8SM7PKPU</dd><dt>Channel</dt><dd>System</dd><dt>Event ID</dt><dd>7040</dd><dt>Record</dt><dd>73822</dd><dt>Service</dt><dd>Windows Modules Installer</dd><dt>Events in window</dt><dd>1</dd></dl>
+    <p class="fp"><strong>Known benign causes:</strong> Routine software installation and Windows servicing</p>
+    
+  </div>
+</details>
+</section>
+
+<section>
+  <h2><span class="idx">05</span>Telemetry coverage</h2>
+  <table><thead><tr><th>Channel</th><th>Events</th><th>Normalised</th><th>Coverage</th></tr></thead><tbody><tr><td class='mono'>application</td><td>209</td><td>0</td><td>0%</td></tr><tr><td class='mono'>system</td><td>115</td><td>10</td><td>8%</td></tr><tr><td class='mono'>powershell_classic</td><td>93</td><td>16</td><td>17%</td></tr><tr><td class='mono'>powershell</td><td>33</td><td>2</td><td>6%</td></tr><tr><td class='mono'>defender</td><td>14</td><td>0</td><td>0%</td></tr><tr><td class='mono'>rdp_local</td><td>1</td><td>0</td><td>0%</td></tr></tbody></table>
+  <h3>Event IDs without a field mapper</h3>
+  <table><thead><tr><th>Channel / Event ID</th><th>Count</th></tr></thead><tbody><tr><td class='mono'>application/1004</td><td>87</td></tr><tr><td class='mono'>powershell_classic/600</td><td>77</td></tr><tr><td class='mono'>application/1001</td><td>55</td></tr><tr><td class='mono'>system/566</td><td>20</td></tr><tr><td class='mono'>powershell/4100</td><td>18</td></tr><tr><td class='mono'>application/1034</td><td>12</td></tr><tr><td class='mono'>application/16384</td><td>11</td></tr><tr><td class='mono'>application/16394</td><td>11</td></tr><tr><td class='mono'>system/507</td><td>10</td></tr><tr><td class='mono'>system/506</td><td>9</td></tr><tr><td class='mono'>system/44</td><td>9</td></tr><tr><td class='mono'>system/43</td><td>8</td></tr><tr><td class='mono'>powershell/53504</td><td>5</td></tr><tr><td class='mono'>system/16</td><td>5</td></tr><tr><td class='mono'>system/1</td><td>5</td></tr></tbody></table>
+</section>
+
+<section>
+  <h2><span class="idx">06</span>Rules that did not fire</h2>
+  <p class="note">Listed for honesty about coverage. A rule producing no alerts
+  may mean the activity was absent, or that the telemetry needed to detect it
+  was never collected - these are different conclusions and only the channel
+  table above distinguishes them.</p>
+  <table><thead><tr><th>Rule</th><th>Severity</th><th>Title</th></tr></thead><tbody><tr><td class='mono'>credaccess_brute_force</td><td>high</td><td>Repeated failed logons against one account</td></tr><tr><td class='mono'>credaccess_lsass_access</td><td>critical</td><td>LSASS memory accessed by an unusual process</td></tr><tr><td class='mono'>credaccess_password_spray</td><td>critical</td><td>Failed logons against many accounts from one source</td></tr><tr><td class='mono'>discovery_reconnaissance_burst</td><td>medium</td><td>Rapid host and domain discovery</td></tr><tr><td class='mono'>evasion_defender_disabled_or_alerting</td><td>high</td><td>Windows Defender detection or tampering</td></tr><tr><td class='mono'>evasion_event_log_cleared</td><td>critical</td><td>Event log cleared</td></tr><tr><td class='mono'>evasion_executable_from_temp</td><td>medium</td><td>Executable launched from a temporary directory</td></tr><tr><td class='mono'>exec_lolbin_network_activity</td><td>high</td><td>Living-off-the-land binary made a network connection</td></tr><tr><td class='mono'>exec_office_spawns_shell</td><td>critical</td><td>Office application spawned a command interpreter</td></tr><tr><td class='mono'>exec_powershell_download_cradle</td><td>high</td><td>PowerShell download cradle</td></tr><tr><td class='mono'>exec_powershell_encoded</td><td>high</td><td>Encoded PowerShell command line</td></tr><tr><td class='mono'>exec_suspicious_parent_child</td><td>high</td><td>Unusual process ancestry for a command interpreter</td></tr><tr><td class='mono'>lateral_admin_share_access</td><td>high</td><td>Administrative share accessed remotely</td></tr><tr><td class='mono'>lateral_remote_interactive_logon</td><td>medium</td><td>Remote interactive logon</td></tr><tr><td class='mono'>persist_run_key_from_temp</td><td>high</td><td>Autorun key pointing at a temporary directory</td></tr><tr><td class='mono'>persist_run_key_modified</td><td>medium</td><td>Autorun registry key modified</td></tr><tr><td class='mono'>persist_scheduled_task_created</td><td>medium</td><td>Scheduled task created</td></tr><tr><td class='mono'>persist_service_from_user_path</td><td>critical</td><td>Service installed from a user-writable location</td></tr><tr><td class='mono'>privesc_admin_group_addition</td><td>critical</td><td>Account added to a privileged group</td></tr><tr><td class='mono'>privesc_new_local_account</td><td>high</td><td>Local user account created</td></tr></tbody></table>
+</section>
+
+<footer>
+  Generated 2026-08-03 18:07:55Z &middot; pipeline v1.0.0 &middot;
+  events C:\Users\yaswa\Desktop\Dissertation\Project Artifact\Automation_Script\EventLogCollection\LAPTOP-8SM7PKPU_20260802-123055\parsed\events.sqlite
+</footer>
+</div></body></html>

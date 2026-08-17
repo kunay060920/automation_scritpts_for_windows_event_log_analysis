@@ -1,0 +1,227 @@
+﻿{
+    "CollectionId":  "LAPTOP-8SM7PKPU_20260806-103410",
+    "CollectedAtUtc":  "2026-08-06T09:34:11Z",
+    "CollectedBy":  "LAPTOP-8SM7PKPU\\yaswa",
+    "Elevated":  false,
+    "Hostname":  "LAPTOP-8SM7PKPU",
+    "OperatingSystem":  "Microsoft Windows 11 Pro",
+    "OSBuild":  "10.0.26200.0",
+    "TimeZone":  "GMT Standard Time",
+    "WindowStartUtc":  "2026-08-05T09:34:10.468Z",
+    "WindowEndUtc":  "2026-08-06T09:34:10.468Z",
+    "Format":  "All",
+    "MaxEventsPerChannel":  50000,
+    "ToolVersion":  "1.0.0",
+    "Channels":  [
+                     {
+                         "Channel":  "Security",
+                         "Present":  false,
+                         "EventCount":  0,
+                         "EvtxFile":  null,
+                         "JsonlFile":  null,
+                         "CsvFile":  null,
+                         "Errors":  [
+                                        "Channel not found"
+                                    ]
+                     },
+                     {
+                         "Channel":  "System",
+                         "Present":  true,
+                         "EventCount":  57,
+                         "EvtxFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\evtx\\System.evtx",
+                         "JsonlFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\jsonl\\System.jsonl",
+                         "CsvFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\csv\\System.csv",
+                         "Errors":  [
+
+                                    ],
+                         "IsEnabled":  true
+                     },
+                     {
+                         "Channel":  "Application",
+                         "Present":  true,
+                         "EventCount":  51,
+                         "EvtxFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\evtx\\Application.evtx",
+                         "JsonlFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\jsonl\\Application.jsonl",
+                         "CsvFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\csv\\Application.csv",
+                         "Errors":  [
+
+                                    ],
+                         "IsEnabled":  true
+                     },
+                     {
+                         "Channel":  "Microsoft-Windows-Sysmon/Operational",
+                         "Present":  false,
+                         "EventCount":  0,
+                         "EvtxFile":  null,
+                         "JsonlFile":  null,
+                         "CsvFile":  null,
+                         "Errors":  [
+                                        "Channel not found"
+                                    ]
+                     },
+                     {
+                         "Channel":  "Microsoft-Windows-PowerShell/Operational",
+                         "Present":  true,
+                         "EventCount":  2,
+                         "EvtxFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\evtx\\Microsoft-Windows-PowerShell-Operational.evtx",
+                         "JsonlFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\jsonl\\Microsoft-Windows-PowerShell-Operational.jsonl",
+                         "CsvFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\csv\\Microsoft-Windows-PowerShell-Operational.csv",
+                         "Errors":  [
+
+                                    ],
+                         "IsEnabled":  true
+                     },
+                     {
+                         "Channel":  "Windows PowerShell",
+                         "Present":  true,
+                         "EventCount":  0,
+                         "EvtxFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\evtx\\Windows-PowerShell.evtx",
+                         "JsonlFile":  null,
+                         "CsvFile":  null,
+                         "Errors":  [
+
+                                    ],
+                         "IsEnabled":  true
+                     },
+                     {
+                         "Channel":  "Microsoft-Windows-TaskScheduler/Operational",
+                         "Present":  true,
+                         "EventCount":  0,
+                         "EvtxFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\evtx\\Microsoft-Windows-TaskScheduler-Operational.evtx",
+                         "JsonlFile":  null,
+                         "CsvFile":  null,
+                         "Errors":  [
+
+                                    ],
+                         "IsEnabled":  false
+                     },
+                     {
+                         "Channel":  "Microsoft-Windows-WinRM/Operational",
+                         "Present":  true,
+                         "EventCount":  0,
+                         "EvtxFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\evtx\\Microsoft-Windows-WinRM-Operational.evtx",
+                         "JsonlFile":  null,
+                         "CsvFile":  null,
+                         "Errors":  [
+
+                                    ],
+                         "IsEnabled":  true
+                     },
+                     {
+                         "Channel":  "Microsoft-Windows-Windows Defender/Operational",
+                         "Present":  true,
+                         "EventCount":  22,
+                         "EvtxFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\evtx\\Microsoft-Windows-Windows-Defender-Operational.evtx",
+                         "JsonlFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\jsonl\\Microsoft-Windows-Windows-Defender-Operational.jsonl",
+                         "CsvFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\csv\\Microsoft-Windows-Windows-Defender-Operational.csv",
+                         "Errors":  [
+
+                                    ],
+                         "IsEnabled":  true
+                     },
+                     {
+                         "Channel":  "Microsoft-Windows-TerminalServices-LocalSessionManager/Operational",
+                         "Present":  true,
+                         "EventCount":  1,
+                         "EvtxFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\evtx\\Microsoft-Windows-TerminalServices-LocalSessionManager-Operational.evtx",
+                         "JsonlFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\jsonl\\Microsoft-Windows-TerminalServices-LocalSessionManager-Operational.jsonl",
+                         "CsvFile":  "C:\\Users\\yaswa\\Desktop\\Dissertation\\Project Artifact\\Automation_Script\\EventLogCollection\\LAPTOP-8SM7PKPU_20260806-103410\\csv\\Microsoft-Windows-TerminalServices-LocalSessionManager-Operational.csv",
+                         "Errors":  [
+
+                                    ],
+                         "IsEnabled":  true
+                     }
+                 ],
+    "Files":  [
+                  {
+                      "Path":  "csv\\Application.csv",
+                      "SizeBytes":  35822,
+                      "SHA256":  "ACC2409AB5F8DB7C1AC2854AEA791363D01D3705D4B252E80FABEF5905B96152"
+                  },
+                  {
+                      "Path":  "csv\\Microsoft-Windows-PowerShell-Operational.csv",
+                      "SizeBytes":  28814,
+                      "SHA256":  "34BE4A427A92673448BA1302706BFD71DB0BD633FD7E78183A80269505481859"
+                  },
+                  {
+                      "Path":  "csv\\Microsoft-Windows-TerminalServices-LocalSessionManager-Operational.csv",
+                      "SizeBytes":  616,
+                      "SHA256":  "B4FEACFD4C86A9E429429D7FC0983C7CC3730644E040D6FCEF4304A863D95442"
+                  },
+                  {
+                      "Path":  "csv\\Microsoft-Windows-Windows-Defender-Operational.csv",
+                      "SizeBytes":  18094,
+                      "SHA256":  "21C96C28F87FEA06C67FA57FC4044775B7621CB9BB0CD0A6D4751951CEF1A887"
+                  },
+                  {
+                      "Path":  "csv\\System.csv",
+                      "SizeBytes":  33281,
+                      "SHA256":  "E5223153D423559F45AE7E17C1EB1609DF93FA81BFF9BFF6531F03B36E057989"
+                  },
+                  {
+                      "Path":  "evtx\\Application.evtx",
+                      "SizeBytes":  69632,
+                      "SHA256":  "86297B43009DB7A41F3A529478F12B187949B0E823DA6EDDE2B40579008E3560"
+                  },
+                  {
+                      "Path":  "evtx\\Microsoft-Windows-PowerShell-Operational.evtx",
+                      "SizeBytes":  69632,
+                      "SHA256":  "E645A5B382028286C45F10A16096C261D0E3B5431655075E05E3E3628D59F547"
+                  },
+                  {
+                      "Path":  "evtx\\Microsoft-Windows-TaskScheduler-Operational.evtx",
+                      "SizeBytes":  69632,
+                      "SHA256":  "54F6C9CF93154E9EB443886D4E5EE43419C6F1BFD100E461D7C6233925ABC281"
+                  },
+                  {
+                      "Path":  "evtx\\Microsoft-Windows-TerminalServices-LocalSessionManager-Operational.evtx",
+                      "SizeBytes":  69632,
+                      "SHA256":  "7AAE602CBAD3A5C5C7302BCD2BBC5426CAD1F0B44A41C9E6487B93B8B847BFD1"
+                  },
+                  {
+                      "Path":  "evtx\\Microsoft-Windows-Windows-Defender-Operational.evtx",
+                      "SizeBytes":  69632,
+                      "SHA256":  "967F035D4EF233D719793B41BBA3B1EC4960FD9611BA87FD9784715E0FD56E88"
+                  },
+                  {
+                      "Path":  "evtx\\Microsoft-Windows-WinRM-Operational.evtx",
+                      "SizeBytes":  69632,
+                      "SHA256":  "54F6C9CF93154E9EB443886D4E5EE43419C6F1BFD100E461D7C6233925ABC281"
+                  },
+                  {
+                      "Path":  "evtx\\System.evtx",
+                      "SizeBytes":  69632,
+                      "SHA256":  "F14179637AC17A552176D1F9B8803555F8445762173C8D9EEA6AF156218CF9CB"
+                  },
+                  {
+                      "Path":  "evtx\\Windows-PowerShell.evtx",
+                      "SizeBytes":  69632,
+                      "SHA256":  "ED9AFDC7131414008B7CA139725FA84FE316A7DE04758187E0B98973D47BDFC0"
+                  },
+                  {
+                      "Path":  "jsonl\\Application.jsonl",
+                      "SizeBytes":  45771,
+                      "SHA256":  "95CDBC0462BC0EE48B45C3BAF9EF50BF0F740C9276402E5EABA86FEB96B422E3"
+                  },
+                  {
+                      "Path":  "jsonl\\Microsoft-Windows-PowerShell-Operational.jsonl",
+                      "SizeBytes":  30380,
+                      "SHA256":  "9949432EB5FCC7ED542B0A2A011AD8952B5309EA4D43C1BC8E79213878138858"
+                  },
+                  {
+                      "Path":  "jsonl\\Microsoft-Windows-TerminalServices-LocalSessionManager-Operational.jsonl",
+                      "SizeBytes":  670,
+                      "SHA256":  "D907CA11B3FE9DC6A4DC959AB926539C5B44FBE1FF65BBC6562243885AC249E5"
+                  },
+                  {
+                      "Path":  "jsonl\\Microsoft-Windows-Windows-Defender-Operational.jsonl",
+                      "SizeBytes":  21767,
+                      "SHA256":  "D660E7CA5B1851617F1AC33FC262A1017158864CF8FC12CF2509245D29870818"
+                  },
+                  {
+                      "Path":  "jsonl\\System.jsonl",
+                      "SizeBytes":  42905,
+                      "SHA256":  "1DC8E952D8B9AD8C8DAF205ACA2BF7490CB5D4C85DC5BB6D6FE8F5DC81016ECB"
+                  }
+              ]
+}
