@@ -8,3 +8,5 @@ cmd: python .\detect.py .\EventLogCollection\LAPTOP-8SM7PKPU_20260802-123055
 
 Now execute the below command to generate the report based on the analysis performed using 
 cmd: python report.py
+
+you can view the results report "./EventLogCollection\{logs_collected_folder}\parsed\report.html"
